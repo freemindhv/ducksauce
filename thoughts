@@ -1,0 +1,50 @@
+ducksauce
+==========================
+server
+------------------------------------------
+runnable on a desktop and small devices like a raspberry pi or Linksys NSLU2 (arm based micro computers) Linksys WRT54GL (for wireless)
+additionally for the lulz: mbed?
+Manages clients, tables, menus, bills, logs, reservations....
++needs access to a printer
++ every client must authenticate on the server:
+certificate based
+additionally, let a client application take on the server part (maybe as a fallback) without the customer even recognizing it.
+client
+------------------------------------------
+Android, iOS 5,6, Windows 7 + 8, GNU/Linux, OSX and variants. NO UBUNTU!, EMACS Plugin 'cause there's a shortcut for that!
+GTK/QT Clients if needed
+Windows native Client (.NET)?
+Web interface for Cross Platform capabillities.
+connection
+------------------------------------------
+connection via wireless infrastructure
+possibility to switch to bluetooth stack?
+NFC
+to be discussed
+------------------------------------------
+data stored in small neat database like nodb
+vs.
+file based
+file transfer via SCP
+vs
+ssl sockets
+user login
+vs
+device authentication
+event based
+vs
+ threads
+data transfer, 
+JSON vs XML
+toolchain
+--------------------------------------------
+automatic creation of config files
+easy setup? how
+shell script for automatic setup?
+first steps
+------------------------------------------
+more ppl dafuq!!
+specification
+server components
+github README
+
