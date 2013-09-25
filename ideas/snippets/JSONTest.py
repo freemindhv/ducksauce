@@ -24,21 +24,21 @@ class MessageHandler:
         self.table[val[0]](val)
 
 def handleMessage01(s):
-    msg = Message01.fromJSONString(s)
+    msg = Message01.fromJSONList(s)
     print("MessageHandler for Message01 active:")
     msg.dump()
 
 def handleMessage02(s):
-    msg = Message02.fromJSONString(s)
+    msg = Message02.fromJSONList(s)
     print("MessageHandler for Message02 active:")
     msg.dump()
 
 class Message:
     @staticmethod
-    def fromJSONString(s):
+    def fromJSONList(s):
         raise NotImplementedError("Subclasses must implement this function")
     def toJSONString(self):
-        raise NotImplementedError("Subclasses must implement this function")
+        return json.dumps(self, cls = JSONMessageEncoder)
 
 class Message01(Message):
     def __init__(self, data = None):
@@ -49,11 +49,8 @@ class Message01(Message):
         print("Message01: " + str(self.id) + " " + self.data + "\n")
 
     @staticmethod
-    def fromJSONString(s):
+    def fromJSONList(s):
         return Message01(s[1])
-
-    def toJSONString(self):
-        return json.dumps(self, cls = JSONMessageEncoder)
 
 class Message02(Message):
     def __init__(self, val = None, strings = None):
@@ -68,11 +65,8 @@ class Message02(Message):
         print("")
 
     @staticmethod
-    def fromJSONString(s):
+    def fromJSONList(s):
         return Message02(s[1], s[2])
-
-    def toJSONString(self):
-        return json.dumps(self, cls = JSONMessageEncoder);
 
 if __name__ == "__main__":
 
