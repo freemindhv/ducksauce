@@ -1,3 +1,4 @@
+#!/usr/bin/python 
 # Echo client program
 import socket
 
