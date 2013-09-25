@@ -59,11 +59,8 @@ class Message02(Message):
         self.strings = strings
 
     def dump(self):
-        print("Message02: " + str(self.id) + " " + str(self.val) + " ")
-        for item in self.strings:
-            print(item + " ")
-        print("")
-
+        print("Message02: " + str(self.id) + " " + str(self.val) + " " + " ".join(self.strings) + "\n")
+        
     @staticmethod
     def fromJSONList(s):
         return Message02(s[1], s[2])
