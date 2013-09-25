@@ -40,7 +40,7 @@ class Message:
     def toJSONString(self):
         raise NotImplementedError("Subclasses must implement this function")
 
-class Message01(Message, json.JSONEncoder):
+class Message01(Message):
     def __init__(self, data = None):
         self.id   = 0x01
         self.data = data
