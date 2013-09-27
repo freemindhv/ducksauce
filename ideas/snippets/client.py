@@ -1,13 +1,15 @@
 #!/usr/bin/python 
+
 # Echo client program
 import socket
 
-HOST = ''                 # The remote host
-PORT = 50007              # The same port as used by the server
-data = 'Here comes a bunchload of data, 1101010101001101010101010101010101010101010101010010101010101010101010101010'
+host = "localhost"        # The remote host
+port = 50007              # The same port as used by the server
+data = b"Here comes a bunchload of data"
+
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((HOST, PORT))
+s.connect((host, port))
 s.sendall(data)
 s.close()
-print 'Data succesfully send'
+print("Data succesfully send")
 
