@@ -1,21 +1,17 @@
 #!/usr/bin/env python
-'''
-Created on 25.09.2013
 
-@author: freemind
-'''
 # Echo server program
 import socket
 
-HOST = '0.0.0.0'          # Symbolic name meaning all available interfaces
-PORT = 50007              # Arbitrary non-privileged port
+host = '0.0.0.0'          # Symbolic name meaning all available interfaces
+port = 50007              # Arbitrary non-privileged port
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind((HOST, PORT))
+s.bind((host, port))
 s.listen(1)
 conn, addr = s.accept()
-print 'Connected by', addr
+print("Connected by {}".format(str(addr)))
 while 1:
     data = conn.recv(1024)
     if not data: break
-    print(data)
+    print(data.decode("utf-8"))
 conn.close()
