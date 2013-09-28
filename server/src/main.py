@@ -20,7 +20,7 @@ while 1:
     inputready,outputready,exceptready = select.select(reading,[],[]) 
     for x in inputready:
         if x == a.s:
-            conn,addr = a.s.accept()
+            conn,addr = x.accept()
             reading.append(conn)
             print("Conecction established by {}" .format(addr))
         else:
@@ -29,6 +29,6 @@ while 1:
                 print("Data is received as follows:{}" .format(data))
             else:
                 x.close()
-                reading.remove(a.s)
+                reading.remove(x)
                 
 a.s.close()
