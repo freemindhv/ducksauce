@@ -2,14 +2,14 @@
 
 # Echo client program
 import socket
-import JSON
+import JSONTest
 host = "localhost"        # The remote host
-port = 50007              # The same port as used by the server
-data = JSON.Message01("Here comes a shitload of data")
+port = 51001              # The same port as used by the server
+data = JSONTest.Message01("Here comes a shitload of data")
 
 #convert to JSON
 x = data.toJSONString()
-y = JSON.Message02(1000, ["", "", ""]).toJSONString().encode()
+y = JSONTest.Message02(1000, ["", "", ""]).toJSONString().encode()
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((host, port))
