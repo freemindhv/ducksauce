@@ -28,6 +28,7 @@ while 1:
             if data:
                 print("Data is received as follows:{}" .format(data))
             else:
+                print("Client disconnected")
                 x.close()
                 reading.remove(x)
                 
