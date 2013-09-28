@@ -10,6 +10,7 @@ class DsSocket:
     def socketInit(self):
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.s.setblocking(0)
     
     def socketBind(self):
         try:
