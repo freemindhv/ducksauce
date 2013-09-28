@@ -14,18 +14,21 @@ print(host)
 a = socketlib.DsSocket(host, port, backlog)
 a.socketInit()
 a.socketBind()
+reading = [a.s]
 
 while 1:
-    inputready,outputready,exceptready = select.select([a.s],[],[]) 
+    inputready,outputready,exceptready = select.select(reading,[],[]) 
     for x in inputready:
         if x == a.s:
             conn,addr = a.s.accept()
+            reading.append(conn)
             print("Conecction established by {}" .format(addr))
         else:
-            data = a.s.recv(buffsize)
+            data = x.recv(buffsize)
             if data:
                 print("Data is received as follows:{}" .format(data))
             else:
                 x.close()
+                reading.remove(a.s)
                 
 a.s.close()
