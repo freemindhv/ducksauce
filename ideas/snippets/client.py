@@ -6,7 +6,6 @@ import JSONTest
 import time
 host = "localhost"        # The remote host
 port = 51001              # The same port as used by the server
-data = 
 
 #convert to JSON
 x = JSONTest.Message01("Here comes a shitload of data").toJSONString().encode()

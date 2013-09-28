@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import select
-import socketlib
+import modules.socketlib
 
 
 #host = socket.gethostbyname(socket.gethostname())
@@ -11,7 +11,7 @@ buffsize = 1024
 backlog = 5
 print(host)
 
-a = socketlib.DsSocket(host, port, backlog)
+a = modules.socketlib.DsSocket(host, port, backlog)
 a.socketInit()
 a.socketBind()
 reading = [a.s]
