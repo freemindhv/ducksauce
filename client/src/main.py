@@ -17,6 +17,8 @@
 #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 ##!/usr/bin/env python3
 
+import time
+
 from modules.clientsocket import ClientSocket as ClientSocket
 from modules.objects import MessageHandler as MessageHandler
 from modules.serial import Decoder as Decoder
@@ -27,10 +29,55 @@ from modules.messages import BillRequest as BillRequest
 from modules.messages import BillResponse as BillResponse
 from modules.messages import ReserveTableRequest as ReserveTableRequest
 
+def handlePing(msg):
+    print("handling Ping")
+    
+def handleAck(msg):
+    print("handling Ack")
+   
+def handleBillRequest(msg):
+    print("handling BillRequest")
+    
+def handleBillResponse(msg):
+    print("handling BillResponse")
+    
+def handleOrderRequest(msg):
+    print("handling OrderRequest")
+    
+def handleReserveTableRequest(msg):
+    print("handling ReserveTableRequest")
+
+def setupMessageHandler():
+    decoder_table = {
+        MessageId.PING : Ping.fromAttributeList,
+        MessageId.ACKNOWLEDGEMENT : Acknowledgement.fromAttributeList,
+        MessageId.BILL_REQUEST : BillRequest.fromAttributeList,
+        MessageId.BILL_RESPONSE : BillResponse.fromAttributeList,
+        MessageId.RESERVE_TABLE_REQUEST : ReserveTableRequest.fromAttributeList
+    }
+    
+    decoder = Decoder(decoder_table)
+    
+    handler_table = {
+        MessageId.PING : handlePing,
+        MessageId.ACKNOWLEDGEMENT : handleAck,
+        MessageId.BILL_REQUEST : handleBillRequest,
+        MessageId.BILL_RESPONSE : handleBillResponse,
+        MessageId.RESERVE_TABLE_REQUEST : handleReserveTableRequest
+    }
+    
+    return MessageHandler(decoder, handler_table)
+
+message_handler = setupMessageHandler()
 client_socket = ClientSocket("127.0.0.1", 51001) #localhost for testing purposes
 
-#convert a testing message to JSON
-msg = Ping().serialize()
-
-
-client_socket.send(msg)
+while 1:
+    msg = Ping().serialize()
+    client_socket.send(msg)
+    msg = client_socket.recv(4096)
+    
+    print("Received: {}".format(msg.decode()))
+    
+    message_handler.handleMessage(msg)
+    
+    time.sleep(5)
