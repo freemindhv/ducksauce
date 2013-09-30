@@ -14,6 +14,9 @@ class ServerSocket:
             print("ERROR: bind() failed - {}" .format(msg))
 
         self.s.listen(backlog)
+    
+    def __del__(self):
+        self.s.close()
 
     def fd(self):
         return self.s
