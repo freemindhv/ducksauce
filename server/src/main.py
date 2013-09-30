@@ -87,8 +87,12 @@ if __name__ == "__main__":
                 if s:
                     print("Received: {}" .format(s.decode()))
                     message_handler.handleMessage(s)
+                    
+                    x.send(Acknowledgement().serialize())
+                    x.send(Ping().serialize())
+                    x.send(BillResponse(["Cola", "Kaffee", "Pizza"], 12.99).serialize())
                 else:
-                    print("Client disconnected")
                     x.close()
                     reading.remove(x)
+                    print("Client disconnected")
                 
