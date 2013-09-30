@@ -3,7 +3,6 @@
 import select
 import modules.socketlib
 
-
 #host = socket.gethostbyname(socket.gethostname())
 host = ""
 port = 51001
