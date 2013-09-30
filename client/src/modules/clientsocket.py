@@ -29,5 +29,8 @@ class ClientSocket:
         except socket.error as msg:
             print("ERROR: connect() failed - {}" .format(msg))
             
-    def send(self,msg):
+    def send(self, msg):
         return self.s.sendall(msg)
+    
+    def __del__(self):
+        self.s.close()
