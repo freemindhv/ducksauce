@@ -17,32 +17,28 @@
 #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import select
-import modules.socketlib
+from modules.serversocket import ServerSocket as ServerSocket
 
-#host = socket.gethostbyname(socket.gethostname())
-host = ""
-port = 51001
 buffsize = 1024
-backlog = 5
-print(host)
 
-a = modules.socketlib.DsSocket(host, port, backlog)
-a.socketInit()
-a.socketBind()
-reading = [a.s]
+server_sock = ServerSocket("", 51001)
+reading = [server_sock.fd()]
 
 while 1:
-    inputready,outputready,exceptready = select.select(reading,[],[]) 
+    inputready,outputready,exceptready = server_sock.select(reading)
     for x in inputready:
-        if x == a.s:
+        if x == server_sock.fd():
             conn,addr = x.accept()
             reading.append(conn)
-            print("Conecction established by {}" .format(addr))
+            print("Connection established by {}" .format(addr))
         else:
             data = x.recv(buffsize)
             if data:
+<<<<<<< HEAD
                 print("Data is received as follows:{}" .format(data.decode()))
+=======
+                print("Received: {}" .format(data.decode()))
+>>>>>>> 7149767042a9111873e2deb5b2c94521fe4c90c4
             else:
                 print("Client disconnected")
                 x.close()

@@ -22,7 +22,6 @@ from modules.messages import MessageId as MessageId
 from modules.messages import ReserveTableRequest as ReserveTableRequest
 from modules.messages import BillResponse as BillResponse
 from modules.serial import Decoder as Decoder
-#from modules.objects import Order as Order
 
 def handleReserveTableRequest(msg):
     print("handleReserveTableRequest")

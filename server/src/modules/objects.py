@@ -19,24 +19,12 @@
 
 from modules.serial import Encoder
 
-class Order(Encoder):
-    def __init__(self, items = []):
-        self.items = items
-        
-    def add(self, item):
-        self.items.append(item)
-        
-    def delete(self, item):
-        self.items.remove(item)
-        
-    def attributeList(self):
-        return [self.items]
 
 class Table:
     def __init__(self, id, capacity):
         self.id = id
         self.cap = capacity
-        self.active_order = Order()
+        self.active_order = []
         self.reservations = None
         self.log = None
         self.occupied = None
@@ -45,7 +33,7 @@ class Table:
         return [self.id, self.cap]
     
     def addOrder(self, item):
-        self.active_order.add(item)
+        self.active_order.append(item)
         
     def deleteOrder(self, item):
         self.active_order.remove(item)
@@ -54,7 +42,7 @@ class Table:
         return self.active_order
     
     def clearActiveOrder(self):
-        self.active_order = Order()
+        self.active_order = []
 
 
 class MessageHandler:
