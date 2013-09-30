@@ -1,1 +1,0 @@
-/home/freemind/Entwicklung/ducksauce/server/src/modules/serial.py
