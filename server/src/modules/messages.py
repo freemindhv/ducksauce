@@ -18,7 +18,6 @@
 #
 
 from modules.serial import Encoder
-from modules.objects import Order
 
 class MessageId:
     PING = 1
@@ -63,10 +62,6 @@ class BillResponse(Encoder):
         
     def attributeList(self):
         return [self.id, self.order, self.sum]
-    
-    @classmethod
-    def fromAttributeList(cls, attr):
-        return BillResponse(Order(attr[1]), attr[2])
    
    
 class ReserveTableRequest(Encoder):
