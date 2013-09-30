@@ -26,7 +26,7 @@ while 1:
         else:
             data = x.recv(buffsize)
             if data:
-                print("Data is received as follows:{}" .format(data))
+                print("Data is received as follows:{}" .format(data.decode()))
             else:
                 print("Client disconnected")
                 x.close()
