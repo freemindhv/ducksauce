@@ -15,22 +15,19 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
-##!/usr/bin/env python3
-
-from modules.clientsocket import ClientSocket as ClientSocket
-from modules.objects import MessageHandler as MessageHandler
-from modules.serial import Decoder as Decoder
-from modules.messages import MessageId as MessageId
-from modules.messages import Ping as Ping
-from modules.messages import Acknowledgement as Acknowledgement
-from modules.messages import BillRequest as BillRequest
-from modules.messages import BillResponse as BillResponse
-from modules.messages import ReserveTableRequest as ReserveTableRequest
-
-client_socket = ClientSocket("127.0.0.1", 51001) #localhost for testing purposes
-
-#convert a testing message to JSON
-msg = Ping()
 
 
-client_socket.send(msg.serialize())
+import socket
+
+class ClientSocket:
+    def __init__(self, server, port):
+        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        
+        try:
+            self.s.connect((server, port))
+        except socket.error as msg:
+            print("ERROR: connect() failed - {}" .format(msg))
+            
+    def send(self,msg):
+        return self.s.sendall(msg)
