@@ -17,3 +17,12 @@
 #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 ##!/usr/bin/env python3
 
+from modules.clientsocket import ClientSocket as ClientSocket
+from modules.serial import Encoder as Encoder
+
+client_socket = ClientSocket("127.0.0.1", 51001) #localhost for testing purposes
+
+#convert a testing message to JSON
+msg = ("Here comes a shitload of data")
+
+client_socket.send(msg.serialize)
