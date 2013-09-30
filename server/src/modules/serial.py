@@ -34,15 +34,15 @@ class Encoder(json.JSONEncoder):
         return cls(*attr[1:])
     
     def serialize(self):
-        return json.dumps(self, cls = Encoder)
+        return json.dumps(self, cls = Encoder).encode()
 
 
 class Decoder:
-    def __init__(self, constructor_dict = {}):
-        self.c = constructor_dict
+    def __init__(self, constructor_table = {}):
+        self.c = constructor_table
     
     def deserialize(self, s):
-        attr = json.loads(s);
+        attr = json.loads(s).decode();
         
         return self.c[attr[0]](attr)
         
