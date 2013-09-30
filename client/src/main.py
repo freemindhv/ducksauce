@@ -30,7 +30,7 @@ from modules.messages import ReserveTableRequest as ReserveTableRequest
 client_socket = ClientSocket("127.0.0.1", 51001) #localhost for testing purposes
 
 #convert a testing message to JSON
-msg = Ping().serialize
+msg = Ping().serialize()
 
 
 client_socket.send(msg)
