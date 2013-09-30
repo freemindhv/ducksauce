@@ -14,12 +14,6 @@ class ServerSocket:
             print("ERROR: bind() failed - {}" .format(msg))
 
         self.s.listen(backlog)
-        
-    def accept(self):
-        return self.s.accept()
-    
-    def select(self, i = [], o = [], e = []):
-        return select.select(i, o, e)
-    
+
     def fd(self):
         return self.s
