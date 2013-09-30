@@ -36,14 +36,14 @@ d = {
     MessageId.RESERVE_TABLE_REQUEST : ReserveTableRequest.fromAttributeList
 }
 
-encoder = Decoder(d)
+decoder = Decoder(d)
 
 d = {
     MessageId.RESERVE_TABLE_REQUEST : handleReserveTableRequest,
     MessageId.BILL_RESPONSE : handleBillResponse
 }
 
-handler = MessageHandler(encoder, d)
+handler = MessageHandler(decoder, d)
 
 s1 = ReserveTableRequest(3, 8, 800, 2.45).serialize()
 s2 = BillResponse(["Cola", "Pizza", "Hefeweizen", "Muscheln"], 21.99).serialize()

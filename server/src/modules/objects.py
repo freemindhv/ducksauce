@@ -58,8 +58,8 @@ class Table:
 
 
 class MessageHandler:
-    def __init__(self, encoder, handles = {}):
-        self.encoder = encoder
+    def __init__(self, decoder, handles = {}):
+        self.decoder = decoder
         self.handles = handles
         
     def addHandler(self, id, handler):
@@ -69,6 +69,6 @@ class MessageHandler:
         del self.handles[id]
         
     def handleMessage(self, msg_string):
-        msg_object = self.encoder.deserialize(msg_string);
+        msg_object = self.decoder.deserialize(msg_string);
         
         self.handles[msg_object.id](msg_object)
