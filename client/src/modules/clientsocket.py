@@ -32,5 +32,8 @@ class ClientSocket:
     def send(self, msg):
         return self.s.sendall(msg)
     
+    def recv(self, n):
+        return self.s.recv(n)
+    
     def __del__(self):
         self.s.close()
