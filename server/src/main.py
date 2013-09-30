@@ -86,11 +86,14 @@ if __name__ == "__main__":
                 s = x.recv(4096)
                 if s:
                     print("Received: {}" .format(s.decode()))
-                    message_handler.handleMessage(s)
+                    message_handler.handleMessage(s.decode())
                     
-                    x.send(Acknowledgement().serialize())
-                    x.send(Ping().serialize())
-                    x.send(BillResponse(["Cola", "Kaffee", "Pizza"], 12.99).serialize())
+                    m = Acknowledgement().serialize()
+                    x.send(m)
+                    m = Ping().serialize()
+                    x.send(m)
+                    m = BillResponse(["Cola", "Kaffee", "Pizza"], 12.99).serialize()
+                    x.send(m)
                 else:
                     x.close()
                     reading.remove(x)
