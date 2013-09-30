@@ -32,7 +32,7 @@ class Ping(Encoder):
     def __init__(self):
      self.id = MessageId.PING
      
-     def attributeList(self):
+    def attributeList(self):
          return [self.id]
      
      
