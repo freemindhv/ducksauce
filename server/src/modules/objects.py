@@ -55,4 +55,20 @@ class Table:
     
     def clearActiveOrder(self):
         self.active_order = Order()
+
+
+class MessageHandler:
+    def __init__(self, encoder, handles = {}):
+        self.encoder = encoder
+        self.handles = handles
         
+    def addHandler(self, id, handler):
+        self.handles[id] = handler
+        
+    def removeHandler(self, id):
+        del self.handles[id]
+        
+    def handleMessage(self, msg_string):
+        msg_object = self.encoder.deserialize(msg_string);
+        
+        self.handles[msg_object.id](msg_object)

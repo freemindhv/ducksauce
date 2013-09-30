@@ -38,7 +38,7 @@ class Encoder(json.JSONEncoder):
 
 
 class Decoder:
-    def __init__(self, constructor_dict):
+    def __init__(self, constructor_dict = {}):
         self.c = constructor_dict
     
     def deserialize(self, s):
