@@ -42,7 +42,7 @@ class Decoder:
         self.c = constructor_table
     
     def deserialize(self, s):
-        attr = json.loads(s).decode();
+        attr = json.loads(s.decode());
         
         return self.c[attr[0]](attr)
         
