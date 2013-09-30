@@ -74,6 +74,7 @@ if __name__ == "__main__":
     
     server_sock = ServerSocket("", 51001)
     reading = [server_sock.fd()]
+    
 
     while 1:
         inputready,outputready,exceptready = select.select(reading, [], [])
@@ -85,10 +86,10 @@ if __name__ == "__main__":
             else:
                 s = x.recv(4096)
                 if s:
-                    print("Received: {}" .format(s.decode()))
-                    message_handler.handleMessage(s.decode())
+                    print("Received: {}" .format(s))
+                    message_handler.handleMessage(s)
                     
-                    m = Acknowledgement().serialize()
+                    m = Acknowledgement(0).serialize()
                     x.send(m)
                     m = Ping().serialize()
                     x.send(m)
