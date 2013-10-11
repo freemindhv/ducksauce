@@ -19,54 +19,53 @@
 
 import select
 
-from modules.serversocket import ServerSocket as ServerSocket
-from modules.objects import MessageHandler as MessageHandler
-from modules.serial import Decoder as Decoder
-from modules.messages import MessageId as MessageId
-from modules.messages import Ping as Ping
-from modules.messages import Acknowledgement as Acknowledgement
-from modules.messages import BillRequest as BillRequest
-from modules.messages import BillResponse as BillResponse
-from modules.messages import ReserveTableRequest as ReserveTableRequest
+from modules.network import ServerSocket as ServerSocket
+from modules.network import MessageHandler as MessageHandler
+from modules.network import MessageId as MessageId
+from modules.network import Ping as Ping
+from modules.network import Acknowledgement as Acknowledgement
+from modules.network import BillRequest as BillRequest
+from modules.network import BillResponse as BillResponse
+from modules.network import OrderRequest as OrderRequest
+from modules.network import ReserveTableRequest as ReserveTableRequest
+
 
 def handlePing(msg):
-    print("handling Ping")
+    print("handling Ping\nId: {}".format(msg.id))
     
 def handleAck(msg):
-    print("handling Ack")
+    print("handling Ack\nId: {}\nError: {}".format(msg.id, msg.err))
    
 def handleBillRequest(msg):
-    print("handling BillRequest")
+    print("handling BillRequest\nId: {}\nTableId: {}".format(msg.id, msg.table_num))
     
 def handleBillResponse(msg):
-    print("handling BillResponse")
+    print("handling BillResponse\nId: {}".format(msg.id))
+    print(msg.order)
+    print("sum: {}".format(msg.sum))
     
 def handleOrderRequest(msg):
-    print("handling OrderRequest")
+    print("handling OrderRequest\nId: {}".format(msg.id))
     
 def handleReserveTableRequest(msg):
-    print("handling ReserveTableRequest")
+    print("handling ReserveTableRequest\n       \
+        Id: {}\n                                
+        TableId: {}\n
+        Seats: {}\n
+        Time: {}\n
+        Duration: {}".format(msg.id, msg.table_num, msg.time, msg.duration))
 
 def setupMessageHandler():
-    decoder_table = {
-        MessageId.PING : Ping.fromAttributeList,
-        MessageId.ACKNOWLEDGEMENT : Acknowledgement.fromAttributeList,
-        MessageId.BILL_REQUEST : BillRequest.fromAttributeList,
-        MessageId.BILL_RESPONSE : BillResponse.fromAttributeList,
-        MessageId.RESERVE_TABLE_REQUEST : ReserveTableRequest.fromAttributeList
-    }
+    handler = MessageHandler()
     
-    decoder = Decoder(decoder_table)
+    handler.addHandler(MessageId.PING, handlePing)
+    handler.addHandler(MessageId.ACKNOWLEDGEMENT, handleAck)
+    handler.addHandler(MessageId.BILL_REQUEST, handleBillRequest)
+    handler.addHandler(MessageId.BILL_RESPONSE, handleBillResponse)
+    handler.addHandler(MessageId.ORDER_REQUEST, handleOrderRequest)
+    handler.addHandler(MessageId.RESERVE_TABLE_REQUEST, handleReserveTableRequest)
     
-    handler_table = {
-        MessageId.PING : handlePing,
-        MessageId.ACKNOWLEDGEMENT : handleAck,
-        MessageId.BILL_REQUEST : handleBillRequest,
-        MessageId.BILL_RESPONSE : handleBillResponse,
-        MessageId.RESERVE_TABLE_REQUEST : handleReserveTableRequest
-    }
-    
-    return MessageHandler(decoder, handler_table)
+    return handler
 
 if __name__ == "__main__":
     
