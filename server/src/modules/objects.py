@@ -17,8 +17,6 @@
 #    along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from modules.serial import Encoder
-
 
 class Table:
     def __init__(self, id, capacity):
@@ -45,18 +43,7 @@ class Table:
         self.active_order = []
 
 
-class MessageHandler:
-    def __init__(self, decoder, handles = {}):
-        self.decoder = decoder
-        self.handles = handles
-        
-    def addHandler(self, id, handler):
-        self.handles[id] = handler
-        
-    def removeHandler(self, id):
-        del self.handles[id]
-        
-    def handleMessage(self, msg_string):
-        msg_object = self.decoder.deserialize(msg_string);
-        
-        self.handles[msg_object.id](msg_object)
+# TODO: finish class
+class Client:
+    def __init__(self):
+        self.id = 0

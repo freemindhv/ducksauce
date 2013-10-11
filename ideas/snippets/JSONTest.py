@@ -74,6 +74,7 @@ if __name__ == "__main__":
 
     msg01 = Message01("A hole bunch of data")
     x = msg01.toJSONString()
+    print(x)
     msghandler.handleMessage(x)
 
     msg02 = Message02(10, ["God", "damnit", "Larry"])
