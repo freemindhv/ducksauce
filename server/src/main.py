@@ -49,10 +49,10 @@ def handleOrderRequest(msg):
     
 def handleReserveTableRequest(msg):
     print("handling ReserveTableRequest\n       \
-        Id: {}\n                                
-        TableId: {}\n
-        Seats: {}\n
-        Time: {}\n
+        Id: {}\n    \
+        TableId: {}\n    \
+        Seats: {}\n    \
+        Time: {}\n    \
         Duration: {}".format(msg.id, msg.table_num, msg.time, msg.duration))
 
 def setupMessageHandler():
