@@ -32,6 +32,8 @@ from modules.network import ReserveTableRequest as ReserveTableRequest
 
 from modules.objects import Client as Client
 
+from modules.config import Config as Config
+
 def handlePing(client, msg):
     print("handling Ping\nId: {}".format(msg.id))
     
@@ -92,6 +94,11 @@ def setupMessageHandler():
 
 
 if __name__ == "__main__":
+    
+    config = Config("../rc/ducksauce.rc")
+    
+    print("NumberOfTables: {}\nPathCerts: {}\nPathMenu: {}"\
+        .format(str(config.numberOfTables()), config.pathCerts(), config.pathMenu()))
     
     message_handler = setupMessageHandler()
     
