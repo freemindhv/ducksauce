@@ -36,7 +36,7 @@ class ServerSocket:
     def __del__(self):
         self.s.close()
 
-    def fd(self):
+    def socket(self):
         return self.s
 
 
@@ -62,7 +62,8 @@ class Decoder:
     def __init__(self):
         self.c =  {
             MessageId.PING : Ping.fromAttributeList,
-            MessageId.ACKNOWLEDGEMENT : Acknowledgement.fromAttributeList,
+            MessageId.ACK : Ack.fromAttributeList,
+            MessageId.REGISTRATION_REQUEST : RegistrationRequest.fromAttributeList,
             MessageId.BILL_REQUEST : BillRequest.fromAttributeList,
             MessageId.BILL_RESPONSE : BillResponse.fromAttributeList,
             MessageId.RESERVE_TABLE_REQUEST : ReserveTableRequest.fromAttributeList
@@ -81,13 +82,13 @@ class Decoder:
 
 class MessageId:
     PING = 1
-    ACKNOWLEDGEMENT  = 2
-    BILL_REQUEST = 3
-    BILL_RESPONSE = 4
-    ORDER_REQUEST = 5
-    RESERVE_TABLE_REQUEST = 6
-    
-    
+    ACK  = 2
+    REGISTRATION_REQUEST = 3
+    BILL_REQUEST = 4
+    BILL_RESPONSE = 5
+    ORDER_REQUEST = 6
+    RESERVE_TABLE_REQUEST = 7
+        
 class Ping(Encoder):
     def __init__(self):
      self.id = MessageId.PING
@@ -96,14 +97,21 @@ class Ping(Encoder):
          return [self.id]
      
      
-class Acknowledgement(Encoder):
+class Ack(Encoder):
     def __init__(self, err):
-        self.id = MessageId.ACKNOWLEDGEMENT
+        self.id = MessageId.ACK
         self.err = err
         
     def attributeList(self):
         return [self.id, self.err]
 
+
+class RegistrationRequest(Encoder):
+    def __init__(self):
+        self.id = MessageId.REGISTRATION_REQUEST
+        
+    def attributeList(self):
+        return [self.id]
 
 class BillRequest(Encoder):
     def __init__(self, table_num):
@@ -152,7 +160,7 @@ class MessageHandler:
     def removeHandler(self, id):
         del self.handles[id]
         
-    def handleMessage(self, msg_string):
+    def handleMessage(self, client, msg_string):
         msg_object = self.decoder.deserialize(msg_string);
         
-        self.handles[msg_object.id](msg_object)
+        return self.handles[msg_object.id](client, msg_object)

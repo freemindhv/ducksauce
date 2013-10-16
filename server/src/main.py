@@ -23,75 +23,122 @@ from modules.network import ServerSocket as ServerSocket
 from modules.network import MessageHandler as MessageHandler
 from modules.network import MessageId as MessageId
 from modules.network import Ping as Ping
-from modules.network import Acknowledgement as Acknowledgement
+from modules.network import Ack as Ack
+from modules.network import RegistrationRequest as RegistrationRequest
 from modules.network import BillRequest as BillRequest
 from modules.network import BillResponse as BillResponse
 from modules.network import OrderRequest as OrderRequest
 from modules.network import ReserveTableRequest as ReserveTableRequest
 
+from modules.objects import Client as Client
 
-def handlePing(msg):
+def handlePing(client, msg):
     print("handling Ping\nId: {}".format(msg.id))
     
-def handleAck(msg):
+    response = Ack(0).serialize()
+    
+    client.send(response)
+    
+    return True
+    
+    
+def handleAck(client, msg):
     print("handling Ack\nId: {}\nError: {}".format(msg.id, msg.err))
+
+
+def handleRegistrationRequest(client, msg):
+    print("handling RegistrationRequest\nId: {}".format(msg.id))
+    
+    client.register()
+    
+    response = Ack(0).serialize()
+    
+    client.send(response)
+    
+    return True
    
-def handleBillRequest(msg):
+   
+def handleBillRequest(client, msg):
     print("handling BillRequest\nId: {}\nTableId: {}".format(msg.id, msg.table_num))
     
-def handleBillResponse(msg):
-    print("handling BillResponse\nId: {}".format(msg.id))
-    print(msg.order)
-    print("sum: {}".format(msg.sum))
+    response = BillResponse(["Beer", "Pizza"], 10.99).serialize()
     
-def handleOrderRequest(msg):
+    client.send(response)
+    
+    
+def handleOrderRequest(client, msg):
     print("handling OrderRequest\nId: {}".format(msg.id))
     
-def handleReserveTableRequest(msg):
-    print("handling ReserveTableRequest\n       \
-        Id: {}\n                                
-        TableId: {}\n
-        Seats: {}\n
-        Time: {}\n
+    
+def handleReserveTableRequest(client, msg):
+    print("handling ReserveTableRequest\n                                      \
+        Id: {}\n                                                               \
+        TableId: {}\n                                                          \
+        Seats: {}\n                                                            \
+        Time: {}\n                                                             \
         Duration: {}".format(msg.id, msg.table_num, msg.time, msg.duration))
+
 
 def setupMessageHandler():
     handler = MessageHandler()
     
     handler.addHandler(MessageId.PING, handlePing)
-    handler.addHandler(MessageId.ACKNOWLEDGEMENT, handleAck)
+    handler.addHandler(MessageId.ACK, handleAck)
     handler.addHandler(MessageId.BILL_REQUEST, handleBillRequest)
-    handler.addHandler(MessageId.BILL_RESPONSE, handleBillResponse)
     handler.addHandler(MessageId.ORDER_REQUEST, handleOrderRequest)
     handler.addHandler(MessageId.RESERVE_TABLE_REQUEST, handleReserveTableRequest)
     
     return handler
+
 
 if __name__ == "__main__":
     
     message_handler = setupMessageHandler()
     
     server_sock = ServerSocket("", 51001)
-    reading = [server_sock.fd()]
+    reading = [server_sock.socket()]
     
+    client_table = {}
 
     while 1:
         inputready,outputready,exceptready = select.select(reading, [], [])
         for x in inputready:
-            if x == server_sock.fd():
-                conn,addr = x.accept()
-                reading.append(conn)
-                print("Connection established by {}" .format(addr))
-            else:
-                s = x.recv(4096)
-                if s:
-                    print("Received: {}" .format(s.decode()))
-                    message_handler.handleMessage(s)
 
-                    m = BillResponse(["Cola", "Kaffee", "Pizza"], 12.99)
-                    x.send(m.serialize())
-                else:
-                    x.close()
+            # add new connection
+            if x == server_sock.socket():
+                conn,addr = x.accept()
+                
+                fd = conn.fileno()
+                
+                client_table[fd] = Client(conn, addr)
+                reading.append(conn)
+                
+                print("Connection established by {}".format(addr))
+                continue
+            
+            fd = x.fileno()
+
+            # receive message and handle it
+            client = client_table[fd]
+            s = client.recv(4096)
+            
+            if not s:
+                print("Client {} disconnected".format(client.address()))
+                
+                del client_table[fd]
+                reading.remove(x)
+                continue
+                
+            print("Received: {}".format(s.decode()))
+            
+            ok = message_handler.handleMessage(client, s)
+            
+            if not ok:
+                if not client.isRegistered():
                     reading.remove(x)
-                    print("Client disconnected")
+                    del client_table[fd]
+                else:
+                    client.createdError()
+
+
                 

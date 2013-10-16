@@ -45,5 +45,48 @@ class Table:
 
 # TODO: finish class
 class Client:
-    def __init__(self):
-        self.id = 0
+    def __init__(self, sock, addr):
+        self.sock = sock
+        self.addr = addr
+        self.registered = False
+        self.errors = 0
+        self.msg_in = 0
+        self.msg_out = 0
+        
+    def __del__(self):
+        self.sock.close()
+        
+    def address(self):
+        return self.addr
+    
+    def messagesReceived(self):
+        return self.msg_in
+    
+    def messagesSent(self):
+        return self.msg_out
+        
+    def register(self):
+        self.registered = True
+        
+    def isRegistered(self):
+        return self.registered
+    
+    def fileno(self):
+        return self.sock.fileno()
+    
+    def recv(self, size):
+        self.msg_in += 1
+        return self.sock.recv(size)
+        
+    def send(self, s):
+        self.msg_out += 1
+        self.sock.send(s)
+        
+    def createdError(self):
+        self.error += 1
+        
+    def errors(self):
+        return self.error
+    
+    def cleanErrors(self):
+        self.errors = 0
