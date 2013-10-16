@@ -84,10 +84,17 @@ class MessageId:
     PING = 1
     ACK  = 2
     REGISTRATION_REQUEST = 3
-    BILL_REQUEST = 4
-    BILL_RESPONSE = 5
-    ORDER_REQUEST = 6
-    RESERVE_TABLE_REQUEST = 7
+    LOGOUT = 4
+    BILL_REQUEST = 5
+    BILL_RESPONSE = 6
+    ORDER_REQUEST = 7
+    RESERVE_TABLE_REQUEST = 8
+    CLEAR_ORDER = 9
+    MENU = 10
+    RESERVATIONS = 11
+    SETTLE_BILL = 12
+    FINISH_TABLE = 13
+    REVOKE_ORDER = 14
         
 class Ping(Encoder):
     def __init__(self):
@@ -112,6 +119,15 @@ class RegistrationRequest(Encoder):
         
     def attributeList(self):
         return [self.id]
+    
+
+class Logout(Encoder):
+    def __init__(self):
+        self.id = MessageId.LOGOUT
+        
+    def attributeList(self):
+        return [self.id]
+    
 
 class BillRequest(Encoder):
     def __init__(self, table_num):
@@ -146,9 +162,55 @@ class ReserveTableRequest(Encoder):
 # TODO: finish class   
 class OrderRequest(Encoder):
     def __init__(self):
-        self.id = MessageId.ORDER_REQUEST  
+        self.id = MessageId.ORDER_REQUEST
         
+    def attributeList(self):
+        return [self.id]
+
+class ClearOrder(Encoder):
+    def __init__(self):
+        self.id = MessageId.CLEAR_ORDER
         
+    def attributeList(self):
+        return [self.id]
+        
+class RevokeOrder(Encoder):
+    def __init__(self):
+        self.id = MessageId.REVOKE_ORDER
+        
+    def attributeList(self):
+        return [self.id]
+
+class Menu(Encoder):
+    def __init__(self, s):
+        self.id = MessageId.MENU
+        self.menu = s
+        
+    def attributeList(self):
+        return [self.id. self.menu]
+
+class Reservations(Encoder):
+    def __init__(self):
+        self.id = MessageId.RESERVATIONS
+        
+    def attributeList(self):
+        return [self.id]
+    
+class SettleBill(Encoder):
+    def __init__(self):
+        self.id = MessageId.SETTLE_BILL
+        
+    def attributeList(self):
+        return [self.id]
+    
+class FinishTable(Encoder):
+    def __init__(self):
+        self.id = MessageId.FINISH_TABLE
+        
+    def attributeList(self):
+        return [self.id]
+    
+    
 class MessageHandler:
     def __init__(self):
         self.decoder = Decoder()
