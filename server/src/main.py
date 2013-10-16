@@ -68,14 +68,14 @@ def handleBillRequest(client, msg):
     
 def handleOrderRequest(client, msg):
     print("handling OrderRequest\nId: {}".format(msg.id))
-    
-    
-def handleReserveTableRequest(client, msg):
-    print("handling ReserveTableRequest\n                                      \
-        Id: {}\n                                                               \
-        TableId: {}\n                                                          \
-        Seats: {}\n                                                            \
-        Time: {}\n                                                             \
+
+
+def handleReserveTableRequest(msg):
+    print("handling ReserveTableRequest\n       \
+        Id: {}\n    \
+        TableId: {}\n    \
+        Seats: {}\n    \
+        Time: {}\n    \
         Duration: {}".format(msg.id, msg.table_num, msg.time, msg.duration))
 
 
