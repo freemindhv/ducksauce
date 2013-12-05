@@ -21,7 +21,7 @@ from modules.serial import Encoder
 
 class MessageId:
     PING = 1
-    ACKNOWLEDGEMENT  = 2
+    ACK  = 2
     BILL_REQUEST = 3
     BILL_RESPONSE = 4
     ORDER_REQUEST = 5
@@ -36,9 +36,9 @@ class Ping(Encoder):
          return [self.id]
      
      
-class Acknowledgement(Encoder):
+class Ack(Encoder):
     def __init__(self, err):
-        self.id = MessageId.ACKNOWLEDGEMENT
+        self.id = MessageId.ACK
         self.err = err
         
     def attributeList(self):
